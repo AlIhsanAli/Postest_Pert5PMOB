@@ -18,6 +18,15 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var postAdapter: PostAdapter
 
+    private val profileImages = listOf(
+        R.drawable.monyet,
+        R.drawable.anjing,
+        R.drawable.kucing,
+        R.drawable.bebek,
+        R.drawable.bahlil
+    )
+    private var profileImageCounter = 0
+
     private val addPostLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.let { intent ->
@@ -27,11 +36,14 @@ class MainActivity : AppCompatActivity() {
 
                 if (imageUriString != null && username != null && caption != null) {
                     val imageUri = Uri.parse(imageUriString)
+                    val profileImageRes = profileImages[profileImageCounter % profileImages.size]
+                    profileImageCounter++
+
                     val newPost = Post(
                         username = username,
                         imageUri = imageUri,
                         caption = caption,
-                        profileImage = R.mipmap.ic_launcher_round
+                        profileImage = profileImageRes
                     )
                     mainViewModel.addPost(newPost)
                 }
@@ -87,8 +99,8 @@ class MainActivity : AppCompatActivity() {
             Story("user1", R.drawable.monyet),
             Story("user2", R.drawable.anjing),
             Story("user3", R.drawable.kucing),
-            Story("user_4", R.drawable.bebek),
-            Story("user_5", R.drawable.bahlil),
+            Story("user4", R.drawable.bebek),
+            Story("user5", R.drawable.bahlil)
         )
         val storyAdapter = StoryAdapter(stories)
         binding.rvStories.apply {
